@@ -92,7 +92,7 @@ if MODE=="train":
    p = ArcStandardParser2( trainer)
    import random
    random.seed("seed")
-   random.shuffle(sents)
+   # random.shuffle(sents)
    for x in xrange(10):
       print "iter ",x
       for i,sent in enumerate(sents):
