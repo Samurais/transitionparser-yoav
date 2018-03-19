@@ -12,3 +12,6 @@ sftp-config.json
 *.ipr
 *.iws
 *.idea
+ml/build
+ml/ml.so
+model.out

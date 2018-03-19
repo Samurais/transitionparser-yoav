@@ -24,22 +24,35 @@ sys.path.append("..")
 import common
 
 def to_tok(line):
-   if line[4]=="_": line[4]=line[3]
-   return {"parent": int(line[-4]),
-           "prel"  : line[-3],
-           "form"  : line[1], 
-           "lem"  : line[2], 
-           "id"    : int(line[0]), 
-           "tag"   : line[4],
-           "ctag"   : line[3],
-           "morph" : line[-5].split("|"),
-           "extra" :  line[-1],
-           }
+    # if line[4]=="_": line[4]=line[3]
+    return {"parent": int(line[6]),
+            "prel": line[7],
+            "form": line[1],
+            "lem": line[2],
+            "id": int(line[0]),
+            "tag": line[4],
+            "ctag": line[3],
+            "morph": line[5].split("|"),
+            "extra": line[9],
+            }
 
-def conll_to_sents(fh,ignore_errs=True):
-   for sent in yutils.tokenize_blanks(fh):
-      if ignore_errs and sent[0][0][0]=="@": continue
-      yield [to_tok(l) for l in sent]
+
+def conll_to_sents(fh, ignore_errs=True):
+    for sent in yutils.tokenize_blanks(fh):
+        if ignore_errs and sent[0][0][0] == "@":
+            continue
+        lines = []
+        for x in sent:
+            if x[0].strip().startswith("#"):
+                continue
+            if x[6].strip() == "_" or x[7].strip() == "_":
+                continue
+            if len(x) != 10:
+                continue
+            lines.append(x)
+        if len(lines) > 0:
+            yield [to_tok(l) for l in lines]
+
 
 def ann_conll_to_sents(fh):
    sent=[]
